@@ -6,12 +6,16 @@ import {
   ProductType,
 } from "@apple/app-store-server-library";
 import { readFile } from "fs";
+const { google } = require("googleapis");
+const path = require("path");
 
 interface ICTSubscriptionDTO {}
 interface IAppleSubscriptionCreateDTO {
   transactionId: string;
 }
-interface IGoogleSubscriptionCreateDTO {}
+interface IGoogleSubscriptionCreateDTO {
+  purchaseToken: string;
+}
 interface ICreateSubscriptionDTO {
   provider: number;
   data:
@@ -45,6 +49,25 @@ interface IAppleTranasctionInfo {
   appTransactionId: string;
   signedDate: number;
   price: number;
+}
+interface IAndroidSubscriptionItems {
+  productId: string;
+  expiryTime: Date;
+  autoRenewingPlan: {
+    recurringPrice: { currencyCode: string; units: number };
+  };
+  offerDetails: { basePlanId: string };
+}
+interface IAndroidSubscriptionResponse {
+  kind: string;
+  startTime: Date;
+  regionCode: string;
+  subscriptionState: string;
+  latestOrderId: string;
+  linkedPurchaseToken: string;
+  canceledStateContext: { replacementCancellation: any };
+  acknowledgementState: string;
+  lineItems: IAndroidSubscriptionItems[];
 }
 
 class SubscriptionController {
@@ -112,7 +135,7 @@ class AppleSubscriptionProvider implements ISubscriptionProvider {
   async createSubscription(data: IAppleSubscriptionCreateDTO): Promise<void> {
     try {
       const validationResp = await this.validateTransaction(data);
-      if(validationResp.success) throw new Error("Transaction is not valid");
+      if (validationResp.success) throw new Error("Transaction is not valid");
       // Create Tranasction
     } catch (err) {
       console.error("Failed to create subscription", err);
@@ -162,9 +185,62 @@ class AppleSubscriptionProvider implements ISubscriptionProvider {
 }
 
 class GoogleSubscriptionProvider implements ISubscriptionProvider {
-  async createSubscription(data: IGoogleSubscriptionCreateDTO): Promise<void> {
-    
+  androidpublisher: any;
+  packageName: string = "com.billionfaces.projects.CtRnIapStarter";
+
+  constructor() {
+    this.init();
   }
+
+  async init() {
+    try {
+      const serviceAccountPath = path.join(
+        "__dirname",
+        "/casttree-d50d2cec9329.json"
+      );
+      const auth = new google.auth.GoogleAuth({
+        keyFile: serviceAccountPath,
+        scopes: ["https://www.googleapis.com/auth/androidpublisher"],
+      });
+      this.androidpublisher = google.androidpublisher({
+        version: "v3",
+        auth: auth,
+      });
+    } catch (err) {
+      console.error("Failed to init", err);
+    }
+  }
+
+  async createSubscription(data: IGoogleSubscriptionCreateDTO): Promise<void> {
+    try {
+      const validationResp = await this.validateTransaction(data);
+      if (!validationResp.success) throw new Error("Transaction is not valid");
+      // Create Tranasction
+    } catch (err) {
+      console.error("Failed to create subscription", err);
+    }
+  }
+
+  async validateTransaction(data: IGoogleSubscriptionCreateDTO): Promise<{
+    success: boolean;
+    transactionInfo: IAndroidSubscriptionResponse;
+  }> {
+    try {
+      const res = await this.androidpublisher.purchases.subscriptionsv2.get({
+        packageName: this.packageName,
+        token: data.purchaseToken,
+      });
+      const transactionInfo: IAndroidSubscriptionResponse = res.data;
+      return {
+        success: transactionInfo.lineItems[0].expiryTime > new Date(),
+        transactionInfo,
+      };
+    } catch (err) {
+      console.error("Failed to get transaction", err);
+      throw err;
+    }
+  }
+  
   handleEvents(): void {
     throw new Error("Method not implemented.");
   }
