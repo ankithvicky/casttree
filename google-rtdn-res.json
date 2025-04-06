@@ -1,0 +1,10 @@
+{
+  "message": {
+    "data": "eyJ2ZXJzaW9uIjoiMS4wIiwicGFja2FnZU5hbWUiOiJjb20uYmlsbGlvbmZhY2VzLmNhc3R0cmVlIiwiZXZlbnRUaW1lTWlsbGlzIjoiMTc0Mzk0MzExNTUzMyIsInN1YnNjcmlwdGlvbk5vdGlmaWNhdGlvbiI6eyJ2ZXJzaW9uIjoiMS4wIiwibm90aWZpY2F0aW9uVHlwZSI6MTMsInB1cmNoYXNlVG9rZW4iOiJoZ2NqZmVwaWxvbXBkbmdkaWRncGlmaGcuQU8tSjFPeHJMLXhCelVzWDd6NDVMVlFVR0V3d1ZYSHhQYUdSSHA0cnR6b05Db0x3MVZYVnVYdkg2NktqZ2xJa2RCLU93QmZBcklaZnNESjhVc3NkWmdvMzROWlpGbWRyN05vRzFhX1Q4YkJDN2xtRWJkT0lkQTgiLCJzdWJzY3JpcHRpb25JZCI6ImNhc185XzFtXzBkMCJ9fQ==",
+    "messageId": "14428715298756041",
+    "message_id": "14428715298756041",
+    "publishTime": "2025-04-06T12:38:35.731Z",
+    "publish_time": "2025-04-06T12:38:35.731Z"
+  },
+  "subscription": "projects/casttree/subscriptions/play-rtdn-sub"
+}
