@@ -1,0 +1,20 @@
+{
+  "kind": "androidpublisher#subscriptionPurchaseV2",
+  "startTime": "2025-04-06T10:52:06.591Z",
+  "regionCode": "IN",
+  "subscriptionState": "SUBSCRIPTION_STATE_ACTIVE",
+  "latestOrderId": "GPA.3389-9180-7849-02068",
+  "linkedPurchaseToken": "nlfjddgiacdlgphdblecccfi.AO-J1OzduEtItYvPlHkw54f8F-QHSyymASWlywjQ0doEwxEYs18eAOM_umzVwaUoouIKhVwEDTWdszKne0JFgWOZyHWBwvRq5hq5LIKN82USuq1OOnNXMmw",
+  "acknowledgementState": "ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED",
+  "lineItems": [
+    {
+      "productId": "cas_9_1m_0d0",
+      "expiryTime": "2025-06-04T13:44:40.246Z",
+      "autoRenewingPlan": {
+        "autoRenewEnabled": true,
+        "recurringPrice": { "currencyCode": "INR", "units": "85" }
+      },
+      "offerDetails": { "basePlanId": "casttree-premium" }
+    }
+  ]
+}
